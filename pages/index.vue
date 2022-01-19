@@ -96,10 +96,18 @@ export default {
       event.preventDefault()
       this.isLoading = true
       //alert(JSON.stringify(this.form))
-      console.log(this.form)   
-      this.url = local_url  
-      console.log(this.url)
-      this.getPost()
+      // console.log(this.form)   
+      // this.url = local_url  
+      // console.log(this.url)
+      // this.getPost()
+
+      axios.post(url, {
+            title: "Hello My People",
+            body: "Naso we dey greet ourselves for this part of the world o"
+        }).then((response) => {
+            setPost(response.data);
+        });
+
     },
     onReset(event) {
       event.preventDefault()
@@ -118,11 +126,19 @@ export default {
         axios.get(`${local_url}/${endPoints.test}`).then((response) => {
             console.log(response.data);
         });
-    }
-    // async function getPost(){
-    //       const response = await client.get('/1');
-    //       setPosts(response.data);
+    },
+
+    // const handleCreate = () => {
+    //     const url ='https://jsonplaceholder.typicode.com/posts';
+
+    //     axios.post(url, {
+    //         title: "Hello My People",
+    //         body: "Naso we dey greet ourselves for this part of the world o"
+    //     }).then((response) => {
+    //         setPost(response.data);
+    //     });
     // }
+   
 
   }
 }
