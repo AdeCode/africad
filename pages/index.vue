@@ -15,7 +15,7 @@
           <p>We're building a Community for Creatives and Creators. And we'll like you to be a part of this new budding community of talented individuals.</p>
           <div class="form">
             <h2 class="header">Subscribe</h2>
-            <b-form v-on:submit="onSubmit" v-on:reset="onReset" v-if="show">
+             <b-form v-on:submit="onSubmit" v-on:reset="onReset" v-if="show">
               <b-form-group
                 id="input-group-1"
                 label-for="input-1"
@@ -40,32 +40,10 @@
                   placeholder="Name"
                   required
                 ></b-form-input>
-              </b-form-group>
-
-              <!-- <b-form-group id="input-group-3" label="Food:" label-for="input-3">
-                <b-form-select
-                  id="input-3"
-                  v-model="form.food"
-                  :options="foods"
-                  required
-                ></b-form-select>
-              </b-form-group> -->
-
-              <!-- <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
-                <b-form-checkbox-group
-                  v-model="form.checked"
-                  id="checkboxes-4"
-                  :aria-describedby="ariaDescribedby"
-                >
-                  <b-form-checkbox value="me">Check me out</b-form-checkbox>
-                  <b-form-checkbox value="that">Check that out</b-form-checkbox>
-                </b-form-checkbox-group>
-              </b-form-group> -->
-
+              </b-form-group>              
               <b-button type="submit" variant="primary">Join Our Waitlist</b-button>
               <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
             </b-form>   
-
             <div class="form-footer">
               We respect your privacy, Unsubsribe at anytime.
             </div>         
@@ -85,8 +63,20 @@
 </template>
 
 <script>
+import {
+  ValidationProvider, 
+  ValidationObserver
+  } from 'vee-validate';
+import {local_url, endPoints} from '../utils/http'
+import axios from 'axios'
+
 export default {
   name: 'IndexPage',
+
+  components: {
+    ValidationProvider,
+    ValidationObserver
+  },
 
   data () {
     return {
@@ -95,29 +85,45 @@ export default {
           email: '',
           name: '',         
       },
+      isLoading: false,
       foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
-      show: true
+      show: true,
+      url: '',
     }
   },
   methods: {
     onSubmit(event) {
       event.preventDefault()
-      alert(JSON.stringify(this.form))
-      console.log(this.form)
+      this.isLoading = true
+      //alert(JSON.stringify(this.form))
+      console.log(this.form)   
+      this.url = local_url  
+      console.log(this.url)
+      this.getPost()
     },
     onReset(event) {
       event.preventDefault()
       // Reset our form values
       this.form.email = ''
-      this.form.name = ''
-      this.form.food = null
-      this.form.checked = []
+      this.form.name = ''      
       // Trick to reset/clear native browser form validation state
       this.show = false
+      this.isLoading = false
       this.$nextTick(() => {
       this.show = true
       })
+    },
+
+    getPost(){
+        axios.get(`${local_url}/${endPoints.test}`).then((response) => {
+            console.log(response.data);
+        });
     }
+    // async function getPost(){
+    //       const response = await client.get('/1');
+    //       setPosts(response.data);
+    // }
+
   }
 }
 </script>
@@ -252,6 +258,17 @@ export default {
           }
         }
       }
+  }
+
+  .loginBut{
+    padding: 7px 25px !important;
+    letter-spacing: 0px;
+    font-weight: 600;
+    margin-top: 25px;
+    border-radius: var(--border-radius);
+    width: 125px;
+    background: var(--blue) !important;
+    color: var(--white);
   }
 }
 </style>

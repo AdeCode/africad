@@ -3,7 +3,7 @@ export default {
   ssr: false,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
-  target: 'static',
+  // target: 'static',
   head: {
     title: 'alliance-waitlist',
     htmlAttrs: {
@@ -51,5 +51,9 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    analyze: {
+      analyzerMode: 'static'
+    },
+    babel: { compact: true }
   }
 }
