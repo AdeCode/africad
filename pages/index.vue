@@ -15,7 +15,7 @@
           <p>We're building a Community for Creatives and Creators. And we'll like you to be a part of this new budding community of talented individuals.</p>
           <div class="form">
             <h2 class="header">Subscribe</h2>
-             <b-form v-on:submit="onSubmit" v-on:reset="onReset" v-if="show">
+             <b-form v-on:submit="onSubmit" v-on:reset="onReset">
               <b-form-group
                 id="input-group-1"
                 label-for="input-1"
@@ -42,7 +42,6 @@
                 ></b-form-input>
               </b-form-group>              
               <b-button type="submit" variant="primary">Join Our Waitlist</b-button>
-              <!-- <b-button type="reset" variant="danger">Reset</b-button> -->
             </b-form>   
             <div class="form-footer">
               We respect your privacy, Unsubsribe at anytime.
@@ -89,26 +88,24 @@ export default {
       foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
       show: true,
       url: '',
+      
     }
   },
+ 
   methods: {
     onSubmit(event) {
       event.preventDefault()
       this.isLoading = true
-      //alert(JSON.stringify(this.form))
-      // console.log(this.form)   
-      // this.url = local_url  
-      // console.log(this.url)
-      // this.getPost()
-
-      axios.post(url, {
-            title: "Hello My People",
-            body: "Naso we dey greet ourselves for this part of the world o"
-        }).then((response) => {
-            setPost(response.data);
-        });
-
+      axios.post('http://127.0.0.1:8000/api/submit-waitlist',this.form)
+        .then((response) => {
+        const result = response.data
+        console.log(result)
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     },
+    
     onReset(event) {
       event.preventDefault()
       // Reset our form values
@@ -121,25 +118,6 @@ export default {
       this.show = true
       })
     },
-
-    getPost(){
-        axios.get(`${local_url}/${endPoints.test}`).then((response) => {
-            console.log(response.data);
-        });
-    },
-
-    // const handleCreate = () => {
-    //     const url ='https://jsonplaceholder.typicode.com/posts';
-
-    //     axios.post(url, {
-    //         title: "Hello My People",
-    //         body: "Naso we dey greet ourselves for this part of the world o"
-    //     }).then((response) => {
-    //         setPost(response.data);
-    //     });
-    // }
-   
-
   }
 }
 </script>
@@ -162,10 +140,6 @@ export default {
     border-radius: 10px;
     display: flex;
     margin: 30px 0;
-
-    // @media (max-width: 1024px) {
-    //   flex-direction: row-reverse;
-    // }
 
     @media (max-width: 480px) {
       flex-direction: column-reverse;
